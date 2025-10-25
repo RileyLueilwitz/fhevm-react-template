@@ -13,7 +13,7 @@
 
 ## 📹 Demo Video
 
-**🎬 Watch SDK Demonstration:** [demo.mp4](./demo.mp4)
+**🎬 Watch SDK Demonstration:** [demo.mp4]
 
 **Video showcases:**
 - Universal SDK architecture and design
@@ -659,7 +659,7 @@ universal-fhevm-sdk/
 
 ### Video Demonstration
 
-**📹 Watch:** [demo.mp4](./demo.mp4)
+**📹 Watch:** [demo.mp4]
 
 **Covers:**
 1. SDK installation and setup (<2 minutes)

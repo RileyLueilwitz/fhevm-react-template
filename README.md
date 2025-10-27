@@ -9,6 +9,13 @@
 [![SDK](https://img.shields.io/badge/SDK-Universal-orange)]()
 [![Framework Agnostic](https://img.shields.io/badge/Framework-Agnostic-purple)]()
 
+## 🚀 Live Deployment
+
+**🌐 Application:** [https://fhe-green-travel-rewards.vercel.app/](https://fhe-green-travel-rewards.vercel.app/)
+
+**📋 Smart Contract:** `0x8Ac1d3E49A73F8328e43719dCF6fBfeF4405937B` (Sepolia Testnet)
+
+**🔗 Verified Contract:** [View on Sepolia Etherscan](https://sepolia.etherscan.io/address/0x8Ac1d3E49A73F8328e43719dCF6fBfeF4405937B)
 ---
 
 ## 📹 Demo Video

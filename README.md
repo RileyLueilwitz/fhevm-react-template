@@ -155,11 +155,11 @@ console.log('Result:', decrypted)
 │   │
 │   └── index.ts               # Main exports
 │
-├── examples/
-│   ├── nextjs/                        # Next.js example with SDK integration
-│   ├── react/                         # React + Vite example
-│   ├── vue/                           # Vue example (coming soon)
-│   └── PrivateGreenTravelRewards/     # Full example application
+├── templates/
+│   ├── nextjs/                        # Next.js template with SDK integration
+│   ├── react/                         # React + Vite template
+│   ├── vue/                           # Vue 3 template with composables
+│   └── PrivateGreenTravelRewards/     # Full application template
 │
 ├── package.json
 ├── tsconfig.json
@@ -454,12 +454,14 @@ const hasAccess = await checkAccess(fhevm, contract, targetAddress, 'getData')
 - 🚀 [**Quick Start Guide**](./docs/QUICK_START.md) - Get started in 5 minutes
 - 🏗️ [**Architecture Guide**](./docs/ARCHITECTURE.md) - SDK design and patterns
 - 🔌 [**Integration Guide**](./docs/INTEGRATION.md) - Framework-specific examples
-- 🎓 [**Examples**](./examples/) - Next.js, React, Vue examples
+- 🎓 [**Examples**](./examples/) - Usage examples for SDK integration
+- 🎨 [**Templates**](./templates/) - Next.js, React, Vue application templates
 
-### Example Application Documentation
+### Application Templates Documentation
 
-- 📖 **Implementation Examples** - See [examples directory](./examples/)
-- 🛠️ **Setup Guides** - Included in each example's README
+- 📖 **Application Templates** - See [templates directory](./templates/)
+- 📝 **Usage Examples** - See [examples directory](./examples/)
+- 🛠️ **Setup Guides** - Included in each template's README
 - 🎬 **Demo Resources** - Video demonstrations available
 
 ---
@@ -476,27 +478,32 @@ import { FhevmProvider, useEncrypt } from '@fhevm/sdk/react'
 </FhevmProvider>
 ```
 
-### Vue 3 (Coming Soon)
+### Vue 3 (Available)
 
-Vue composables are planned for future releases. For now, you can use the core SDK functions directly in Vue applications:
+Vue 3 support with composables is now available:
 
 ```typescript
-import { createFhevmInstance, encrypt } from '@fhevm/sdk'
+// src/composables/useFhevm.ts
+import { useFhevm } from './composables/useFhevm'
 
 export default {
   setup() {
-    const fhevm = ref(null)
-
-    onMounted(async () => {
-      fhevm.value = await createFhevmInstance({ network: 'sepolia' })
-    })
+    const {
+      account,
+      network,
+      isFhevmReady,
+      connectWallet,
+      encrypt,
+      getContract
+    } = useFhevm()
 
     const submit = async (value) => {
-      const encrypted = await encrypt(fhevm.value, value, 'uint32')
-      // Submit to contract...
+      const encrypted = await encrypt(value, 'uint32')
+      const contract = getContract(contractAddress, contractABI)
+      await contract.submitData(encrypted)
     }
 
-    return { submit }
+    return { submit, account, isFhevmReady }
   }
 }
 ```
@@ -621,15 +628,25 @@ fhevm-react-template/
 │   └── fhevm-sdk/           # Core SDK package
 │       ├── src/
 │       │   ├── core/        # Framework-agnostic functions
-│       │   └── react/       # React hooks & provider
-│       └── package.json
+│       │   ├── react/       # React hooks & provider
+│       │   ├── adapters/    # Vue and vanilla JS adapters
+│       │   ├── types/       # TypeScript type definitions
+│       │   └── utils/       # Utility functions
+│       ├── package.json
+│       └── tsconfig.json
 │
-├── examples/
-│   ├── nextjs/                        # Next.js 14 example (port 3000)
-│   ├── react/                         # React + Vite example (port 3001)
-│   ├── vue/                           # Vue example (coming soon)
-│   └── PrivateGreenTravelRewards/     # Full privacy-preserving rewards system
+├── templates/               # Application templates
+│   ├── nextjs/             # Next.js 14 template (port 3000)
+│   ├── react/              # React + Vite template (port 3001)
+│   ├── vue/                # Vue 3 template (port 3002)
+│   └── PrivateGreenTravelRewards/  # Full React application example
 │
+├── examples/                # Usage examples
+│   ├── basic-encryption.ts
+│   ├── react-hook-usage.tsx
+│   └── contract-interaction.ts
+│
+├── docs/                    # Documentation
 ├── contracts/               # Smart contracts
 ├── scripts/                 # Deployment scripts
 ├── test/                    # Test suite
@@ -686,11 +703,11 @@ fhevm-react-template/
 
 ## 🎨 Framework Examples
 
-All examples demonstrate SDK integration with Private Green Travel Rewards application.
+All templates demonstrate SDK integration with practical FHE applications.
 
-### Next.js Example (Required) ⚛️
+### Next.js Template ⚛️
 
-**Location:** `examples/nextjs/`
+**Location:** `templates/nextjs/`
 
 Modern Next.js 14 application with SDK integration.
 
@@ -743,13 +760,13 @@ function Home() {
 }
 ```
 
-**Documentation:** [examples/nextjs/README.md](./examples/nextjs/README.md)
+**Documentation:** [templates/nextjs/README.md](./templates/nextjs/README.md)
 
 ---
 
-### React (Vite) Example ⚡
+### React (Vite) Template ⚡
 
-**Location:** `examples/react/`
+**Location:** `templates/react/`
 
 Lightning-fast React application built with Vite.
 
@@ -801,24 +818,131 @@ function App() {
 }
 ```
 
-**Documentation:** [examples/react/README.md](./examples/react/README.md)
+**Documentation:** [templates/react/README.md](./templates/react/README.md)
 
 ---
 
-### Example Comparison
+### Vue 3 Template 🎨
+
+**Location:** `templates/vue/`
+
+Modern Vue 3 application with Composition API and TypeScript.
+
+**Features:**
+- ✅ Vue 3 Composition API with `<script setup>`
+- ✅ Custom `useFhevm` composable for FHE operations
+- ✅ Full TypeScript support
+- ✅ Vite for fast development
+- ✅ Reactive state management
+- ✅ Modern component architecture
+
+**Quick Start:**
+```bash
+# Install and build SDK first
+npm run build:sdk
+
+# Run Vue example
+npm run dev:vue
+# Opens on http://localhost:3002
+```
+
+**Key Integration Points:**
+
+`src/composables/useFhevm.ts` - Custom composable:
+```typescript
+import { ref, onMounted } from 'vue'
+import { createInstance } from 'fhevmjs'
+import { BrowserProvider, Contract } from 'ethers'
+
+export function useFhevm() {
+  const account = ref<string | null>(null)
+  const isFhevmReady = ref(false)
+  const fhevmInstance = ref(null)
+
+  const connectWallet = async () => {
+    const provider = new BrowserProvider(window.ethereum)
+    const accounts = await window.ethereum.request({
+      method: 'eth_requestAccounts'
+    })
+    account.value = accounts[0]
+  }
+
+  const encrypt = async (value: number, type: string) => {
+    const signer = await provider.value.getSigner()
+    const input = fhevmInstance.value.createEncryptedInput(contractAddress, account.value)
+    input.add32(value)
+    return input.encrypt().data
+  }
+
+  return { account, isFhevmReady, connectWallet, encrypt, getContract }
+}
+```
+
+`src/App.vue` - Using composable:
+```vue
+<script setup lang="ts">
+import { useFhevm } from './composables/useFhevm'
+
+const {
+  account,
+  isFhevmReady,
+  connectWallet,
+  encrypt,
+  getContract
+} = useFhevm()
+
+const submitData = async () => {
+  const encryptedValue = await encrypt(carbonSaved.value, 'uint32')
+  const contract = getContract(CONTRACT_ADDRESS, CONTRACT_ABI)
+  await contract.submitTravelData(encryptedValue)
+}
+</script>
+
+<template>
+  <button @click="connectWallet" v-if="!account">
+    Connect Wallet
+  </button>
+  <button @click="submitData" v-else :disabled="!isFhevmReady">
+    Submit Encrypted Data
+  </button>
+</template>
+```
+
+**Documentation:** [templates/vue/README.md](./templates/vue/README.md)
+
+---
+
+### Template Comparison
 
 | Feature | Next.js | React (Vite) | Vue 3 |
 |---------|---------|--------------|-------|
-| **Port** | 3000 | 3001 | TBD |
+| **Port** | 3000 | 3001 | 3002 |
 | **Framework** | Next.js 14 | React 18 + Vite | Vue 3 |
 | **Build Tool** | Next.js | Vite | Vite |
 | **HMR Speed** | Fast | Lightning ⚡ | Lightning ⚡ |
 | **SSR Support** | ✅ Yes | ❌ No | ⚠️ Optional |
-| **Bundle Size** | ~85KB | ~45KB | ~40KB (est.) |
-| **Startup Time** | ~2s | ~0.5s | ~0.5s (est.) |
-| **SDK Integration** | ✅ Full | ✅ Full | 🔜 Coming Soon |
+| **Bundle Size** | ~85KB | ~45KB | ~42KB |
+| **Startup Time** | ~2s | ~0.5s | ~0.5s |
+| **SDK Integration** | ✅ Full | ✅ Full | ✅ Full |
 
-The Next.js and React examples demonstrate complete SDK functionality with framework-specific optimizations. Vue support is planned for future releases.
+All three templates demonstrate complete SDK functionality with framework-specific optimizations.
+
+### Usage Examples
+
+**Location:** `examples/`
+
+The examples directory contains practical code snippets demonstrating SDK usage:
+
+- `basic-encryption.ts` - Basic encryption with vanilla JS
+- `react-hook-usage.tsx` - React hooks integration
+- `contract-interaction.ts` - Smart contract interaction
+
+**Quick Start:**
+```bash
+npx ts-node examples/basic-encryption.ts
+```
+
+See [examples/README.md](./examples/README.md) for more details.
 
 ---
 
@@ -884,7 +1008,8 @@ npm run dev
 ### SDK Resources
 - 📦 **npm Package:** `@fhevm/sdk`
 - 📚 **Documentation:** [Full SDK docs](./docs/)
-- 🎓 **Examples:** [Next.js/React/Vue](./examples/)
+- 🎓 **Usage Examples:** [Code examples](./examples/)
+- 🎨 **Application Templates:** [Next.js/React/Vue](./templates/)
 - 💬 **Community:** Join discussions and get support
 
 ### Zama Resources
@@ -892,10 +1017,11 @@ npm run dev
 - 🔗 **fhEVM:** [https://github.com/zama-ai/fhevm](https://github.com/zama-ai/fhevm)
 - 💬 **Discord:** [Join Zama community](https://discord.gg/zama)
 
-### Example Application
+### Example Applications
 - 📝 **Contract:** `0x8Ac1d3E49A73F8328e43719dCF6fBfeF4405937B` (Sepolia)
 - 🔗 **Verified Contract:** [View on Etherscan](https://sepolia.etherscan.io/address/0x8Ac1d3E49A73F8328e43719dCF6fBfeF4405937B)
-- 📖 **Examples:** See [examples directory](./examples/) for implementations
+- 📖 **Usage Examples:** See [examples directory](./examples/) for code snippets
+- 🎨 **Application Templates:** See [templates directory](./templates/) for full applications
 
 ---
 
@@ -903,7 +1029,8 @@ npm run dev
 
 For questions and support:
 - 📚 **Documentation:** Check the [docs](./docs/) directory
-- 🎓 **Examples:** Explore the [examples](./examples/) directory
+- 📝 **Usage Examples:** Explore the [examples](./examples/) directory
+- 🎨 **Application Templates:** Explore the [templates](./templates/) directory
 - 💬 **Zama Discord:** Join the [Zama community](https://discord.gg/zama)
 - 🌐 **Zama Docs:** [https://docs.zama.ai](https://docs.zama.ai)
 
